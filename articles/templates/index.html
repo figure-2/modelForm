@@ -1,0 +1,16 @@
+{% extends 'base.html'%}
+
+{% block body %}
+<h1>index</h1>
+
+    {% for article in articles %}
+        <p>{{article.title}}</p>
+        <a href="{% url 'articles:detail' id=article.id%}">detail</a>
+        <!-- detail에 url을 설정해 준다 위치는 article의 urls.py와 연결 -->
+        <!-- 이 detail 버튼을 누르면 아티클 url의 8번째 중로 간다 -->
+         
+
+        <hr>
+    {% endfor %}
+
+{% endblock %}
