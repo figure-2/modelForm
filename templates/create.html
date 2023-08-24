@@ -2,10 +2,12 @@
 
 {% block body %}
 
-    <form action="" method="POST">
+    <form action="/0" method="POST">
         {% csrf_token %}
         {{form}}
+        <!-- 안에 여러가지 있는 데이터(이름, 주소, 번호 등등)을 form으로 묶어줌 -->
         <input type="submit">
+        <!-- submit 버튼을 누를떄 가는 위치는 위에 action에 넣어준다. -->
 
     </form>
 
