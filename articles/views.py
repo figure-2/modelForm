@@ -28,7 +28,7 @@ def create(request):
     # 1. GET : From을 만들어서 html문서를 사용자에게 리턴
     # 2. POST invalid data : 데이터 검증에 실패한 경우
     #   => 검증에 성공한 데이터만 가지고 Form을 만드어 html 문서를 사용자에게 리턴
-    # 3. POST valid data : 데이터 검증에 성공한 경우
+    # 3. POST ivalid data : 데이터 검증에 성공한 경우
     #   => DB에 데이터 저장 후 derail로 redirect
 
     # =============================================================================
@@ -39,7 +39,7 @@ def create(request):
     # 10. POST요청 (데이터가 옮바르게 들어온 경우)
     if request.method == 'POST':
         # 6. Form에 사용자가 입력한 정보(X)를 담아서 Form을 생성
-        # 11. Form에 사용자가 입력한 정보(O)를 담아서 Formdmf 생선
+        # 11. Form에 사용자가 입력한 정보(O)를 담아서 Form을 생선
         form = ArticleForm(request.POST)
 
         # request.POST를 통해 form에 들어온 데이터가
@@ -77,3 +77,36 @@ def create(request):
         # 4. create.html을 랜더링
         # 9. create.html을 랜더링
         return render(request, 'create.html', context)
+    
+
+def delete(request, id):
+    article = Article.objects.get(id=id)
+
+    article.delete()
+
+    return redirect('articles:index')
+
+def update(request, id):
+    article = Article.objects.get(id=id)
+
+    if request.method == 'POST':
+        form = ArticleForm(request.POST, instance=article)
+        #request.POST 새로운 데이터 /  instance=article 기존 데이터
+
+        if form.is_valid():
+            form.save()
+            return redirect('articles:detail', id=id)
+
+            #위와 같이 작동한다.
+            # article = form.save()
+            # return redirect('articles:detail', id=article.id)
+            
+    else:
+        form = ArticleForm(instance=article)
+        #기존 정보를 instance에 넣는다.
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'update.html', context)
